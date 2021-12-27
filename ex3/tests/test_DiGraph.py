@@ -10,7 +10,7 @@ class TestDiGraph(TestCase):
         graph = GraphAlgo()
         file = '../data/A0.json'
         graph.load_from_json(file)
-        self.assertEqual(graph.graph.v_size(), 11)
+        self.assertEqual(graph.my_graph.v_size(), 11)
 
 
     def test_e_size(self):
