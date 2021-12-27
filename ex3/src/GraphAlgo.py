@@ -11,8 +11,7 @@ from typing import List
 from tkinter import *
 from tkinter import messagebox
 
-colors1 = ["LightSkyBlue1", "LightSkyBlue2", "LightSkyBlue3", "LightSkyBlue4", "files\\logo.png"]
-colors = colors1
+colors = ["LightSkyBlue1", "LightSkyBlue2", "LightSkyBlue3", "LightSkyBlue4"]
 
 
 class GraphGui:
