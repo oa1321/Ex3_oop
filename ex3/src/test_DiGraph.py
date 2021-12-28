@@ -1,6 +1,6 @@
 from unittest import TestCase
-from DiGraph import *
-from GraphAlgo import *
+from src.DiGraph import DiGraph
+from src.GraphAlgo import GraphAlgo
 
 
 class TestDiGraph(TestCase):
@@ -17,36 +17,41 @@ class TestDiGraph(TestCase):
         graph.load_from_json(file)
         self.assertEqual(graph.my_graph.e_size(), 22)
 
-
     def test_get_all_v(self):
         graph = DiGraph()
-        point1 = (35.18753053591606, 32.10378225882353, 0.0)
+        point1 = (1, 1, 1)
+        point2 = (2, 2, 2)
+        point3 = (3, 3, 3)
+        point4 = (4, 4, 4)
         graph.add_node(0, point1)
-        temp = graph.get_all_v()
-        self.assertEqual(True, temp.keys().__contains__(0))
-        point2 = (35.18958953510896, 32.10785303529412, 0.0)
         graph.add_node(1, point2)
-        temp = graph.get_all_v()
-        self.assertEqual(True, temp.keys().__contains__(1))
+        graph.add_node(2, point3)
+        graph.add_node(3, point4)
+        g_ver = graph.get_all_v()
+        self.assertEqual(0, g_ver.get(0).get_key())
+        self.assertEqual(1, g_ver.get(1).get_key())
+        self.assertEqual(2, g_ver.get(2).get_key())
+        self.assertEqual(3, g_ver.get(3).get_key())
 
     def test_all_in_edges_of_node(self):
         graph = GraphAlgo()
         file = '../data/A0.json'
         graph.load_from_json(file)
-
-        temp = graph.get_graph().all_in_edges_of_node(1)
-
-        self.assertTrue(temp.keys().__contains__(0))
-        self.assertTrue(temp.keys().__contains__(2))
+        temp = graph.my_graph.all_in_edges_of_node(1)
+        point0 = (35.18753053591606, 32.10378225882353, 0.0)
+        point2 = (35.19341035835351, 32.10610841680672, 0.0)
+        self.assertTrue(temp.__contains__(0)) #contains the node id 0
+        self.assertTrue(temp.__contains__(2)) #contains the node id 2
 
     def test_all_out_edges_of_node(self):
         graph = GraphAlgo()
         file = '../data/A0.json'
         graph.load_from_json(file)
-        temp = graph.get_graph().all_out_edges_of_node(1)
-
-        self.assertTrue(temp.keys().__contains__(0))
-        self.assertTrue(temp.keys().__contains__(2))
+        temp = graph.my_graph.all_out_edges_of_node(1)
+        point0 = (35.18753053591606, 32.10378225882353, 0.0)
+        point2 = (35.19341035835351, 32.10610841680672, 0.0)
+        self.assertTrue(temp.__contains__(0))
+        self.assertTrue(temp.__contains__(2))
 
     def test_get_mc(self):
         graph = DiGraph()
@@ -92,3 +97,6 @@ class TestDiGraph(TestCase):
         graph.add_node(1, point2)
         graph.add_edge(0, 1, 1.4004465106761335)
         self.assertTrue(graph.remove_edge(0, 1))
+
+
+
