@@ -18,6 +18,9 @@ class Node:
         self.y = y
         self.z = z
         self.ID = id1
+        
+    def get_key(self):
+        return self.ID
 
     def __repr__(self):
         return "" + str(self.ID) + ": |edges_out| " + str(self.out_num) + " |edges_in| " + str(self.in_num)
