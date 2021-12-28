@@ -112,6 +112,8 @@ Node is class to save node data in
     show_graph() - shows the graph on the canvas 
     
 ## GUI
+## Digram
+![image](https://user-images.githubusercontent.com/73098848/147592230-5a54af55-3593-4ff0-bd72-3a2413709cb9.png)
 
 ### About
 we used tkinter for the GUI 
