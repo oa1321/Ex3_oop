@@ -112,6 +112,7 @@ Node is class to save node data in
     show_graph() - shows the graph on the canvas 
     
 ## GUI
+[[https://github.com/oa1321/Ex3_oop/blob/cfb21ed7b3ffac8cfad853ff5f76e7ec8f250e4d/gui.png]]
 ## Digram
 ![image](https://user-images.githubusercontent.com/73098848/147592230-5a54af55-3593-4ff0-bd72-3a2413709cb9.png)
 
