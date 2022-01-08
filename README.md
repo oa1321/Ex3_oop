@@ -1,12 +1,9 @@
 
-# Ex4 - The Finel One , AKA The Pokemon Game
+# Ex3 - Graph and GUI
 
-in this project we were asked to make an algorithem for the pokemon game, and also make a simple GUI.
-
-the pokemon game is simple! you you have agents,nodes,edges and of course pokemons, 
-each pokemon have a value and in the end you need to have as much points as you can by catching them(in this case move near them on the edge) in the time given,
-also each pokemon is seating on an edge and each agent is seating on node(at the start at least)
-the algorithem shood tell the brave agents how to move to max the amount of points. 
+in this project we will build a Graph object to run algorithms on
+and creating a GUI to intract with the Graph , running some algorithms
+usinig python.
 ## Authors
 
 - [@oa1321](https://www.github.com/oa1321) 213101637
@@ -14,43 +11,32 @@ the algorithem shood tell the brave agents how to move to max the amount of poin
 
 
 ## The Problem Space
-the point of the game as described above is to gather as much points as possible, 
-and how to do this is the problem we need to solve.
-first we need to handle few things, the first is were each agent need to start
-and the second is on what edge each pokemon seats on.
-after we solve this two problems we can move to how to move on the graph(the gameboard)
-and collect as much points as possibale
-## The Algorithmem
+we have a few problems to solve in our case, most of the problems are conneted to the
+algorithms part(what to use and how to code them) and some of them are related to the objects
+we need to build like the nodes or the graph , what fiealds each object will contain
+,ehat data strucure we shood use and extra...
+## The Algorithmems
 
-so like we used the first two problems is were the pokemons are and what is the starting node,
-to solve them we used this two Algorithmems
+before the object implamantsion we we need to decide which Algorithmems to use
+in the Algorithmems part the assigment.
 
-first, to find eace pokemons edge we can get is x,y cordinets and go through each edge and choose the clossest one 
-and this part happens by calc the dist src->pokemon->dst and src->dst and then saving the differnce between the two
-after we finished all the edges we need the fined the minimal and this is the edge of the pokemon
-finnaly the type of the pokemon will tell us were the pokemons is on the edge(up the edge or down the edge)
+the shrtest path problem - https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm 
+we used dijkstra Algorithmem with hashmaps to solve the problem.
 
+find the center - to find the center we used floyd warshel Algorithmem for all pairs shortest path
 
-second one, we just simple put each agent next to a pokemon 
-
-after this two solved we can move to the path Algorithmem-
-
-we used for this part our graph imlamentsion from EX3 [--more on that in this link--](https://github.com/oa1321/Ex3_oop.git)
+tsp-using floyd warshal all pairs shortest path to find shortest path, more on the Algorithmem will be in the wiki and algo part of readme
 
 
-the Algorithmem calc the path from our agent src to each node and choose the path
-with the most value to "distance" ratio alse the Algorithmem will prefere paths that will
-make the agent get furter away from the agents in the game 
 
-the Algorithmem runs each time they get to a new node 
-
-the reasoning for the Algorithmem is simple we want an Algorithmem that will get us as much value as we can
-but wont give us a long fixed trip because maybe someone took that pokemon or maybe there is a new and better way
-now, we do the social distancing part of the Algorithmem(the part that trys to seprate the agents from each outer) not just because we need them tp spread on the graph so the Algorithmem will work better but also 
-sometimes they get stuck in each other(not fun for them or for us) and this is not good because they now go togthear but this part of the Algorithmem will try to solve it
 
 ## Classes 
-### the classes we used from ex3 (link in the algorithm part)
+### the classes are gived to us by the api we implament like this 
+the given class in the api were implamented by Digraph and GraphAlgo,
+
+Digraph datastructure was implamented by saving the nodes and edges
+in a dict with node_id as a key and a value of anarray of three elements
+first is the node data the second is a dict of all out edges(id as akey and wight as a value) the thired is a dict of all in edges 
 
 GraphAlgo implaments GraphAlgoInterface
 
@@ -58,178 +44,151 @@ GraphGui is the class of the GUI appliction , we used tkinter for the gui
 
 Node is class to save node data in 
 
-### fields and methods of each class we created
+### fields and methods of each class
 
-#### GuiStuff
+#### Node - a node in a graph:
+    fields:
+    x = x position in the plane
+    y = y position in the plane
+    z = z position in the plane
+    ID = the node id 
+    out_num = the amount of the edges that comes out of the node
+    in_num = the amount of the edges that comes in to the node
+    tag = a tag for the node
+    tag2 = anouter tag for the node
+    prev = anouter tag for the node(saved the save the prev node in some algo)
+    method:
+    __init__ - gets x,y,z value and an id
+    __repr__ - retunrs a stting reprsnting the graph 
 
-this class handels all the Gui part of the game (as asked) and also runs the game loop
+#### Digraph - a graph:
 
-    WIDTH, HEIGHT = 1080, 720 is the size of the screen 
-    radius = the radius for some circles 
-    pokemons = the current pokemons
-    agents = the current agents
-    algo_s: AlgoStuff = a reffrence to the algo class sp we can choose a next node and were to start ....
+    fields:
+    v_num = number of nodes
+    e_num = number of edges
+    graph = the datastrucer of the graph {id: [Node, out_dict{}, in_dict{}]}
+    mc = the amount of modifications in the graph
+    methods:
+    __init__ - gets nothing just "building" the graph
+    v_size() - returns the amount of nodes
+    e_size() - returns the amount of edges
+    get_all_v() - returns a dict of all noeds in the graph, id -> Node data
+    all_in_edges_of_node(int n) - returns a dict of all the out edges of node(n)
+    all_in_edges_of_node(int n) - returns a dict of all the in edges of node(n)
+    get_mc() - returns the mc count of the graph
+    add_node(id, (x,y,z)) - add a node with the id given and a pos of (x,y,z) returns False if succed in adding , True aouterwise
+    remove_node(id) - removes the  node with the id given and returns True if succed or akse returns False
+    add_edge(id1 , id2 , w) - add an edge with wighet w between node id1 to node id2
+    remove_edge(id1, id2) - remove the edge from node id1 to node id2
 
-the init func requres thoose values
+#### GraphAlgo - graph algo class:
+    fields:
+    my_graph = the graph to run algo on
+    methods:
+    __init__ - get a graph to work on
+    get_graph() - retruns the graph
+    load_from_json(json_name) - loads a graph from json file given
+    save_to_json(json_name) - saves a graph to json file given
+    shortest_path(id1, id1) - calc the shortest path from node id1 to node id2 ans returns the path and dist
+    TSP(list of id's) - calc the shortest path that goes by every node and returns dist and path
+    center() - retruns the center of a graph and returns the max path and id of the node
+    set_tag(data) - set all tag 1 of nodes to data
+    set_tag(data) - set all tag 2 of nodes to data
+    set_prev()- set all nodes prev to them self
+    plot_graph() - create a plane gui and calls to GraphGui to show the things we need on that,
 
-    client - the client of the game(a class that was given to us)
-    net_graph: DiGraph() - a graph to work on,
-    graph_info - the graph info,
-    info - the game info
+### also we have the GUI class
 
-#### AlgoStuff
-
-this one is to handle the algorithms we have
-
-    self.client = the client
-    self.my_graph: DiGraph = the graph to work on
-    self.game_info = the game info string 
-    self.agents_path = the agents curr path - used for algo
-    self.agents_prev = the agents prev path - used for algo
+#### GraphGui:
+    fields:
+    my_graph = a graph to show
+    methods:
+    __init__ - draw the gui stuff 
+    foucus1 and foucus2 = listns to an entery they were bind to and waits for an [enter] key to be
+    pressed to do something
+    run_sp() - run shortest path from the data given in the entery of sp
+    run_tsp() - run tsp from the data given in the entery of tsp
+    colored_lines(list of id's) - drawing colored lines and nodes from the nodes given and there edges
+    show_graph() - shows the graph on the canvas 
+    
 ## GUI
 
 ### About
-we used pygame for the GUI 
+we used tkinter for the GUI 
 ### How to download 
 
 download the github repostery and folow the how to use instructions.
 
 ### How to use 
+create an graphalgo instance and call plot graph OR create a GraphGUi instance and give it a graph 
 
-simpale makes better is was our line f thought to build this GUI 
-to use it just check that you have python3 and java and all the libaries installed to your comuter, 
-choose the IDE you want or run it from command line, 
-to you need to run first the java jar server with a case 0-15 and then just run the python main.py file
+note to yourself that if any promblem were occured in the gui(in the runnig algorithms part) you will see
+a message box appaer with the data of the error
 
-if at any point you feal like you want to stop the game just press the red circle in the left up corner 
+also the answrs will be givin via a messagebox (the paths data and id's fot an example) and then will be shown on the screen 
+#### algorithms 
 
-if you are stuck on doctor oak screen press enter 
+to run algorithms on the graph first choose wich algorithms you want after you choosed one folow his instructions - 
 
-you will have the points and moves amount and also the time left shown also in the left up corner
+shortest path-
 
+1.enter in the shortest path entery the two id's you want to check shood be int,int
+1.1. if an error occured a messagebox will be shown with the promblem
 
-## Tests and tests and tests
+2.press enter 
 
-### the best preformance are !!
+3.to clear press the reset button
 
-case 0 - 
+tsp-
 
-    {"GameServer":{"pokemons":1,"is_logged_in":
-    false,"moves":299,"grade":115,"game_level":
-    0,"max_user_level":-1,"id":0,"graph":"data/
-    A0","agents":1}}
+1.enter in the tsp entery the id's you want to check shood be int,int,int,.....
+1.1. if an error occured a messagebox will be shown with the promblem
 
-case 1 - 
+2.press enter 
 
-    {"GameServer":{"pokemons":2,"is_logged_in":
-    false,"moves":598,"grade":490,"game_level":
-    1,"max_user_level":-1,"id":0,"graph":"data/
-    A0","agents":1}}
+3.to clear press the reset button
+## Tests
+cpu - amd ryzen 5000 seris with built-in amd gpu
 
-case 2 -
+100 nodes-
 
-    {"GameServer":{"pokemons":3,"is_logged_in":
-    false,"moves":299,"grade":242,"game_level":
-    2,"max_user_level":-1,"id":0,"graph":"data/
-    A0","agents":1}}
+    shortest path -  0.0037876999999999997 sec
+    center - 0.15819149999999998 sec
+    tsp - 0.2513229 sec
 
-case 3 - 
+1000 nodes-
 
-    {"GameServer":{"pokemons":4,"is_logged_in":
-    false,"moves":587,"grade":629,"game_level":
-    3,"max_user_level":-1,"id":0,"graph":"data/
-    A0","agents":1}}
+    shortest path - 0.13388509999999998 sec
+    center -  160.54462949999999
+    tsp - 213.672673 sec
 
-case 4 -
+5000 nodes - 
+    shortest path - 2.9019657 sec
+    center - a lot
+    tsp - a lot
+10000 nodes-
 
-    {"GameServer":{"pokemons":5,"is_logged_in":
-    false,"moves":299,"grade":188,"game_level":
-    4,"max_user_level":-1,"id":0,"graph":"data/
-    A1","agents":1}}
+    shortest path - 11.3092824 sec
+    center - a lot
+    tsp - a lot
+50000 nodes-
 
-case 5 - 
+    shortest path - 416.26432090000003 sec
+    center - a lot
+    tsp - a lot
+100000 nodes-
 
-    {"GameServer":{"pokemons":6,"is_logged_in":
-    false,"moves":598,"grade":474,"game_level":
-    5,"max_user_level":-1,"id":0,"graph":"data/
-    A1","agents":1}}
+    shortest path - 1302.45940003 sec
+    center - a lot
+    tsp - a lot
+1000000 nodes-
 
-case 6 -
+    shortest path - a lot 
+    center - a lot
+    tsp - a lot
 
-    {"GameServer":{"pokemons":1,"is_logged_in":
-    false,"moves":299,"grade":79,"game_level":6
-    ,"max_user_level":-1,"id":0,"graph":"data/A
-    1","agents":1}}
+shortest path graph - look at sp.png
 
-case 7 - 
-
-    {"GameServer":{"pokemons":2,"is_logged_in":
-    false,"moves":598,"grade":300,"game_level":
-    7,"max_user_level":-1,"id":0,"graph":"data/
-    A1","agents":1}}
-
-case 8 - 
-
-    {"GameServer":{"pokemons":3,"is_logged_in":
-    false,"moves":299,"grade":73,"game_level":8
-    ,"max_user_level":-1,"id":0,"graph":"data/A
-    2","agents":1}}
-
-case 9 =
-
-    {"GameServer":{"pokemons":4,"is_logged_in":
-    false,"moves":598,"grade":383,"game_level":
-    9,"max_user_level":-1,"id":0,"graph":"data/
-    A2","agents":1}}
-
-case 10 - 
-
-    {"GameServer":{"pokemons":5,"is_logged_in":
-    false,"moves":299,"grade":159,"game_level":
-    10,"max_user_level":-1,"id":0,"graph":"data
-    /A2","agents":1}}
-
-case 11 - 
-
-    {"GameServer":{"pokemons":6,"is_logged_in":
-    false,"moves":598,"grade":1797,"game_level"
-    :11,"max_user_level":-1,"id":0,"graph":"dat
-    a/A2","agents":3}}
-
-case 12 - 
-
-    {"GameServer":{"pokemons":1,"is_logged_in":
-    false,"moves":299,"grade":40,"game_level":1
-    2,"max_user_level":-1,"id":0,"graph":"data/
-    A3","agents":1}}
-
-case 13 - 
-
-    {"GameServer":{"pokemons":2,"is_logged_in":
-    false,"moves":598,"grade":300,"game_level":
-    13,"max_user_level":-1,"id":0,"graph":"data
-    /A3","agents":2}}
-
-case 14 - 
-
-    {"GameServer":{"pokemons":3,"is_logged_in":
-    false,"moves":299,"grade":236,"game_level":
-    14,"max_user_level":-1,"id":0,"graph":"data
-    /A3","agents":3}}
-
-case 15 - 
-
-    {"GameServer":{"pokemons":4,"is_logged_in":
-    false,"moves":598,"grade":300,"game_level":
-    15,"max_user_level":-1,"id":0,"graph":"data
-    /A3","agents":1}}
-
-
-
-
-
-
-
-
+center graph -  look at center.png
 
 
